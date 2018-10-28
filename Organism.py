@@ -18,7 +18,7 @@ class Organism(object):
     def getForce(self):
         raise NotImplementedError
     def setForce(self,a):
-        raise NotImplementedError
+        self.force=a
     def getPositionY(self):
         return self.posY
     def getPositionX(self):

@@ -11,8 +11,20 @@ class Human(Animal):
         self.activateSkill=False
         self.countSkillTime=0
     def activateSkillF(self,a):
-        if self.activateSkill==False:
+        if self.activateSkill==False and self.startExtraRounds==False:
             self.activateSkill=True
+    def setCountExtraRounds(self,a):
+        self.countExtraRounds=a
+    def setCountSkillTime(self,a):
+        self.countSkillTime=a
+    def getCountExtraRounds(self):
+        return self.countExtraRounds
+    def getCountSkillTime(self):
+        return self.countSkillTime
+    def setActivateSkill(self,a):
+        self.activateSkill=a
+    def setStartExtraRounds(self,a):
+        self.startExtraRounds=a
     def akcja(self, key):
         if self.startExtraRounds==True:
             self.countExtraRounds+=1
@@ -66,6 +78,9 @@ class Human(Animal):
             self.activateSkill=False
             self.countSkillTime=0
             self.startExtraRounds=True
+        if self.countExtraRounds>=5:
+            self.countExtraRounds=0
+            self.startExtraRounds=False
             self.world.activateToggleButton()
             
     def isAnimal(self, organism):

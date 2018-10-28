@@ -56,7 +56,7 @@ class Sosnowsky(Plant):
         savePosX+=1
 
     def isAnimal(self,animalName):
-        if animalName!="SONSOWSKY" and animalName!="BLUEBERRIES"and animalName!="GUARANA"and animalName!="GRASS"and animalName!="EMPTY" and animalName!="SOWTHISTLE" and animalName!="CYBERSHEEP":
+        if animalName!="SOSNOWSKY" and animalName!="BLUEBERRIES"and animalName!="GUARANA"and animalName!="GRASS"and animalName!="EMPTY" and animalName!="SOWTHISTLE" and animalName!="CYBERSHEEP":
             return True
         return False
 

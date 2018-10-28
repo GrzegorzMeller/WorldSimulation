@@ -1,7 +1,7 @@
 from Organism import *
 import random
 import math
-
+import pickle
 class World(object):
     
     def __init__(self, t):
@@ -27,9 +27,10 @@ class World(object):
             return True
         return False
     def createNewOrganism(self, newOrganismType, newOrganismPosY,newOrganismPosX):
-        self.tkinterWorld.createNewOrganism(newOrganismType, newOrganismPosY,newOrganismPosX)
+        self.tkinterWorld.createNewOrganism(newOrganismType, newOrganismPosY,newOrganismPosX, -1)
     def multiply(self, o):
         self.createdByMultiplication.append(o)
+        self.tkinterWorld.change_color(o.getPositionY(),o.getPositionX(),o.getColor())
     
     def CheckOrganismForceOnPosition(self, y, x):
         for i in self.organismList:
@@ -73,6 +74,54 @@ class World(object):
                     sX = i.getPositionX()
                     sY = i.getPositionY()
         return  {'sY':sY,'sX':sX}
+
+    def saveListToFile(self):
+         file = open('testfile.txt','w') 
+         for i in self.organismList:
+             string =""
+             string = str(i.getType()+" "+str(i.getPositionY())+" "+str(i.getPositionX())+" "+str(i.getForce()))
+             if i.getType() =="HUMAN":
+                 string+=" "+str(i.getCountSkillTime())+" "+str(i.getCountExtraRounds())
+             string+="\n"
+             file.write(string)
+         file.close()
+    def readFromFile(self):
+        file = open('testfile.txt', 'r')
+        del self.createdByMultiplication[:]
+        del self.deadOrganisms[:]
+        del self.organismList[:]
+        self.tkinterWorld.cleanWholeBoard()
+        for line in file:
+            counter=0
+            organismType=""
+            posY=0
+            posX=0
+            force=0
+            skillTime=0
+            extraRounds=0
+            for word in line.split():
+                if counter==0:
+                    organismType=word
+                elif counter==1:
+                    posY=int(word)
+                elif counter==2:
+                    posX=int(word)
+                elif counter==3:
+                    force = int(word)
+                elif counter==4:
+                    skillTime=int(word)
+                elif counter==5:
+                    extraRounds=int(word)
+                counter+=1
+            if organismType=="HUMAN":
+                self.tkinterWorld.createNewHuman(organismType,posY,posX,force,skillTime,extraRounds)
+            else:
+                self.tkinterWorld.createNewOrganism(organismType,posY,posX,force)
+        for x in self.createdByMultiplication:
+            self.organismList.append(x)
+            self.tkinterWorld.change_color(x.getPositionY(),x.getPositionX(),x.getColor())
+        del self.createdByMultiplication[:]
+        file.close()
     def newRound(self):
         for i in self.organismList:
             if i.amIAlive==True:
